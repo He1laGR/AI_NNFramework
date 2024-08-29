@@ -1,0 +1,64 @@
+# Neural Network Framework
+
+Этот фреймворк предназначен для построения и обучения нейронных сетей. Он включает в себя различные классы для активации, функции потерь и оптимизаторы, которые можно использовать для создания и тренировки моделей машинного обучения.
+
+## Реализация
+
+Фреймворк реализован в google colab, основная логика работает в одной ячейке, для запуска достаточно просто запустить ее.
+
+
+### Обучение модели
+
+  Для обучения модели создайте экземпляр оптимизатора и определите функцию потерь, пример:
+
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from sklearn.preprocessing import OneHotEncoder
+  from keras.datasets import mnist
+  
+  # Загрузка данных MNIST
+  (x_train, y_train), (x_test, y_test) = mnist.load_data()
+  
+  # Предобработка данных
+  x_train = x_train.reshape(-1, 28 * 28) / 255.0
+  x_test = x_test.reshape(-1, 28 * 28) / 255.0
+  
+  # Преобразование меток в one-hot формат
+  encoder = OneHotEncoder(sparse=False)
+  y_train_onehot = encoder.fit_transform(y_train.reshape(-1, 1))
+  y_test_onehot = encoder.transform(y_test.reshape(-1, 1))
+  
+  # Создание модели с регуляризацией
+  model = Model()
+  model.add(Dense(784, 256, activation=ReLU())) 
+  model.add(Dense(256, 128, activation=ReLU()))
+  model.add(Dense(128, 10, activation=Softmax()))
+  
+  # Компиляция модели с другим оптимизатором
+  model.compile(optimizer=MomentumSGD(learning_rate=0.001), loss_function=CategoricalCrossentropy())
+  
+  # Обучение модели
+  epochs = 10  # Увеличение количества эпох для лучшего обучения
+  batch_size = 64  # Увеличение размера батча
+  
+  for epoch in range(epochs):
+      model.fit(x_train, y_train_onehot, epochs=1, batch_size=batch_size)
+  
+  # Предсказание на тестовом наборе данных
+  y_test_pred = model.forward(x_test)
+  predicted_classes = np.argmax(y_test_pred, axis=1)
+
+    ### Описание классов
+
+- **ReLU**: Реализует активацию ReLU (Rectified Linear Unit).
+- **Sigmoid**: Класс активации Sigmoid.
+- **Softmax**: Реализует активацию Softmax для многоклассовых задач.
+- **MSE**: Функция потерь среднеквадратичной ошибки.
+- **SGD**: Стохастический градиентный спуск.
+- **MomentumSGD**: Стохастический градиентный спуск с моментумом.
+- **CategoricalCrossentropy**: Функция потерь для многоклассовой классификации.
+- **BinaryCrossentropy**: Функция потерь для бинарной классификации.
+- **HuberLoss**: Функция потерь Huber.
+- **GradientClipping**: Класс для обрезки градиентов.
+
+  ### Пример работы нейронной сети реализован в google colab
